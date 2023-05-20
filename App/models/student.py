@@ -1,8 +1,9 @@
 from App.database import db
+from .user import User
 
 
-class User(db.Model):
-    studentId = db.Column(db.Integer, db.ForeignKey('student.id'))
+class Student(User):
+    studentId = db.Column(db.Integer, unique=True)
 
-    def __init__(self, id):
-        self.id = id
+    def __init__(self, studentId):
+        self.studentId = studentId

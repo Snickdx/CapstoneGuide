@@ -4,7 +4,7 @@ from flask.cli import with_appcontext, AppGroup
 
 from App.database import db, get_migrate
 from App.main import create_app
-from App.controllers import ( create_user, get_all_users_json, get_all_users )
+from App.controllers import ( create_user, get_all_users_json, create_rubric, delete_rubric, get_all_rubrics )
 
 # This commands file allow you to create convenient CLI commands for testing controllers
 
@@ -33,8 +33,9 @@ user_cli = AppGroup('user', help='User object commands')
 @user_cli.command("create", help="Creates a user")
 @click.argument("username", default="rob")
 @click.argument("password", default="robpass")
-def create_user_command(username, password):
-    create_user(username, password)
+@click.argument("email", default="rob@mail.com")
+def create_user_command(username, password, email):
+    create_user(username, password, email)
     print(f'{username} created!')
 
 # this command will be : flask user create bob bobpass
@@ -48,6 +49,22 @@ def list_user_command(format):
         print(get_all_users_json())
 
 app.cli.add_command(user_cli) # add the group to the cli
+
+
+rubric = AppGroup('rubric', help='Rubric object commands') 
+
+# Then define the command and any parameters and annotate it with the group (@)
+@rubric.command("create", help="Creates a dummy rubric")
+@click.argument("notes", default="notes")
+def create_rubric_command(notes):
+    create_rubric(notes=notes, supervisorId=1, novelty=5, feasibility=5, impact=5, sustainability=5)
+    print(f'rubric created!')
+
+@rubric.command("list", help="Lists all rubrics in the database")
+def list_rubric_command():
+    print(get_all_rubrics())
+
+app.cli.add_command(rubric)  
 
 '''
 Test Commands

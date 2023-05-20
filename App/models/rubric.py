@@ -1,25 +1,26 @@
 from App.database import db
 
 class Rubric(db.Model):
-    supervisorId = db.Column(db.Integer, db.ForeignKey('supervisor.id'))
-    rubricId = db.Column(db.Integer, db.ForeignKey('rubric.id'))  # to be used for options(CS, SE, all, etc.)
+    id = db.Column(db.Integer, primary_key=True)  # to be used for options(CS, SE, all, etc.)
+    supervisorId = db.Column(db.Integer)
     novelty = db.Column(db.String)
     relevance = db.Column(db.String)
     feasibility = db.Column(db.String)
     notes = db.Column(db.String)
     impact = db.Column(db.String)
     sustainability = db.Column(db.String)
-    technologies = db.Column(db.String)
 
-    def __init__(self, novelty, feasibility, notes, impact, sustainability, technologies, supervisorId, rubricId):
+
+    def __init__(self, supervisorId, novelty=5, feasibility=5, notes="notes", impact=5, sustainability=5):
         self.supervisorId = supervisorId
-        self.rubricId = rubricId
         self.novelty = novelty
         self.feasibility = feasibility
         self.notes = notes
         self.impact = impact
-        self.technologies = technologies
         self.sustainability = sustainability
+    
+    def __repr__(self):
+        return f'<Rubric {self.id} {self.notes}>'
 
 # Sample Code
     """
